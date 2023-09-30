@@ -17,6 +17,9 @@ class SeleniumActions:
         element = self.driver.find_elements(By.XPATH, xpath)
         return element
     
+
+    def QuitDriver(self):
+        self.driver.quit()  
 class InvoiceExtraction:
 
     def __init__(self):
@@ -36,7 +39,10 @@ class InvoiceExtraction:
     def Start(self, webUrl):
         self.sel.startBrowser()
         self.sel.OpenUrl(webUrl)
-        return self.GetTableValues()
+        tablevalues = self.GetTableValues()
+        self.sel.QuitDriver()
+        return tablevalues
+
 
     
     def CheckTotalPages(self):
@@ -81,9 +87,16 @@ class InputForm:
                             "inputRoleCompany":      "//input[@ng-reflect-name='labelRole']",
                             "inputEmail":      "//input[@ng-reflect-name='labelEmail']",
                             "buttonSubmit":     "//input[@type= 'submit']",
-                            "textCongratulations": "//div[contains(@class, 'congratulations')]"}
+                            "textCongratulations": "//div[contains(@class, 'congratulations')]",
+                            "startButton": "//button[text()='Start']"}
         
         self.sel = SeleniumActions()
+
+    def Start(self, webUrl, values):
+        self.sel.startBrowser()
+        self.sel.OpenUrl(webUrl)
+        self.FillForm(values)
+    
 
     def GetElement(self, element, formatValue = ""):
         if formatValue != "":
@@ -92,9 +105,41 @@ class InputForm:
         return self.elementsDic[element]
 
     def FillForm(self, values):
-        firstName = self.sel.FindElement(self.GetElement("inputFirstName"))
-        
+        startButton = self.sel.FindElement(self.GetElement("startButton"))
+        startButton.click()
+
+        for chave, valor in values.items():
+
+            try:
+                finishedText = self.sel.FindElement(self.GetElement("textCongratulations"))
+                break
+            except:
+                pass
+
+            firstName = self.sel.FindElement(self.GetElement("inputFirstName"))
+            firstName.send_keys(valor[2])
+            
+            lastName = self.sel.FindElement(self.GetElement("inputLastName"))
+            lastName.send_keys(valor[3])
+
+            company = self.sel.FindElement(self.GetElement("inputCompanyName"))
+            company.send_keys(valor[4])
+
+            roleCompany = self.sel.FindElement(self.GetElement("inputRoleCompany"))
+            roleCompany.send_keys(valor[5])
+            
+            email = self.sel.FindElement(self.GetElement("inputEmail"))
+            email.send_keys(valor[6])
+
+            address = self.sel.FindElement(self.GetElement("inputAddress"))
+            address.send_keys(valor[7])
+
+            phoneNumber = self.sel.FindElement(self.GetElement("inputPhoneNumber"))
+            phoneNumber.send_keys(valor[8])
+
+            buttonSubmit = self.sel.FindElement(self.GetElement("buttonSubmit"))
+            buttonSubmit.click()
 
 
-teste = InvoiceExtraction()
-teste.Start("https://rpachallengeocr.azurewebsites.net/")
+
+

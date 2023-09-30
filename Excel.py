@@ -28,7 +28,10 @@ class ExcelFunctions:
 
 
         nowTimeStamp = datetime.now().strftime("%d.%m.%Y - %Hh %Mm %Ss")
-        self.wb.save(f"{self.currentPath}\\Data\\Invoice extraction data - {nowTimeStamp}.xlsx")
+        filePath = f"{self.currentPath}\\Data\\Invoice extraction data - {nowTimeStamp}.xlsx"
+        self.wb.save(filePath)
+
+        return filePath
 
 
     def ReadExcel(self, file_path):
