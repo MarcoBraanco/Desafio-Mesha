@@ -64,6 +64,31 @@ class InvoiceExtraction:
             pageButton.click()
         
         return tableValues
-    
+
+class InputForm:
+    def __init__(self):
+        self.elementsDic = {"inputCompanyName" :       "//input[@ng-reflect-name='labelCompanyName']",
+                            "inputPhoneNumber":      "//input[@ng-reflect-name='labelPhone']",
+                            "inputLastName":      "//input[@ng-reflect-name='labelLastName']",
+                            "inputFirstName":      "//input[@ng-reflect-name='labelFirstName']",
+                            "inputAddress":      "//input[@ng-reflect-name='labelAddress']",
+                            "inputRoleCompany":      "//input[@ng-reflect-name='labelRole']",
+                            "inputEmail":      "//input[@ng-reflect-name='labelEmail']",
+                            "buttonSubmit":     "//input[@type= 'submit']",
+                            "textCongratulations": "//div[contains(@class, 'congratulations')]"}
+        
+        self.sel = SeleniumActions()
+
+    def GetElement(self, element, formatValue = ""):
+        if formatValue != "":
+            return self.elementsDic[element].format(formatValue)
+
+        return self.elementsDic[element]
+
+    def FillForm(self, values):
+        firstName = self.sel.FindElement(self.GetElement("inputFirstName"))
+        firstName.text = "Marco"
+
+
 teste = InvoiceExtraction()
 teste.Start("https://rpachallengeocr.azurewebsites.net/")
