@@ -5,7 +5,7 @@ import os
 class ExcelFunctions:
     def __init__(self):
         self.columnNames = {1:"ID", 2: "Invoice Number", 3:"invoice Date", 4:"First Name", 5:"Last Name",
-                6:"Company Name", 7:"Role in Company", 8:"Email", 9:"Address", 10: "Phone Number"}
+                6:"Company Name", 7:"Role in Company", 8:"Email", 9:"Address", 10: "Phone Number", 11: "Status"}
         self.currentPath = os.getcwd()
         print("teste")
         
@@ -46,3 +46,28 @@ class ExcelFunctions:
             data[chave] = valores
 
         return data
+    
+    def UpdateExcel(self, id, filePath, status):
+        try:
+            # Carregar a planilha
+            workbook = openpyxl.load_workbook(filePath)
+            sheet = workbook.active
+
+            # Encontrar a coluna do ID (assumindo que está na coluna A)
+            coluna_id = 1
+            for row in sheet.iter_rows(min_row=2, max_col=1, values_only=True):
+                if row[0] == id:
+                    coluna_status = 11
+                    sheet.cell(row=int(row[0]), column=coluna_status, value=status)
+                    break
+
+            # Salvar as alterações
+            workbook.save(filePath)
+
+        except Exception as e:
+            print(f"Erro ao atualizar o status do item: {e}")
+
+
+teste = ExcelFunctions()
+
+teste.UpdateExcel("3", r"C:\Users\marco\Desktop\Desafio - Mesha\Desafio-Mesha\Data\Invoice extraction data - 30.09.2023 - 16h 55m 56s.xlsx", "TESTE")

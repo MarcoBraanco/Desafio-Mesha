@@ -108,6 +108,8 @@ class InputForm:
         startButton = self.sel.FindElement(self.GetElement("startButton"))
         startButton.click()
 
+
+
         for chave, valor in values.items():
 
             try:
@@ -139,7 +141,3 @@ class InputForm:
 
             buttonSubmit = self.sel.FindElement(self.GetElement("buttonSubmit"))
             buttonSubmit.click()
-
-
-
-
