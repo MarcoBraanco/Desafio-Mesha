@@ -36,7 +36,7 @@ class InvoiceExtraction:
     def Start(self, webUrl):
         self.sel.startBrowser()
         self.sel.OpenUrl(webUrl)
-        self.GetTableValues()
+        return self.GetTableValues()
 
     
     def CheckTotalPages(self):
@@ -88,7 +88,3 @@ class InputForm:
     def FillForm(self, values):
         firstName = self.sel.FindElement(self.GetElement("inputFirstName"))
         firstName.text = "Marco"
-
-
-teste = InvoiceExtraction()
-teste.Start("https://rpachallengeocr.azurewebsites.net/")
