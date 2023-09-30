@@ -56,6 +56,11 @@ class InvoiceExtraction:
                 rowText = row.text.split()
                 if rowText[0] == "#": continue
                 tableValues[rowText[0]] = rowText[1:]
+                tempValues = ["Marco", "Branco", "mesha. techonolgy",
+                              "RPA Developer (Python)", "marco.branco@somosmesha.com",
+                              "Ribeirao Preto - SP", "16 997561188"]
+                
+                tableValues[rowText[0]].extend(tempValues)
 
             if i == pageNumber:
                 pageButton = self.sel.FindElement(self.GetElement("pageButton", formatValue=i))
@@ -64,6 +69,7 @@ class InvoiceExtraction:
             pageButton.click()
         
         return tableValues
+
 
 class InputForm:
     def __init__(self):
@@ -87,7 +93,7 @@ class InputForm:
 
     def FillForm(self, values):
         firstName = self.sel.FindElement(self.GetElement("inputFirstName"))
-        firstName.text = "Marco"
+        
 
 
 teste = InvoiceExtraction()
