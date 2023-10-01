@@ -1,5 +1,6 @@
 from WebDev import InvoiceExtraction, InputForm
 from Excel import ExcelFunctions
+from GUI import screen
 
 class Main:
     def Run():
@@ -25,3 +26,8 @@ class Main:
             excelFunctions.UpdateStatusExcel(chave, filePath, valor)
 
         excelFunctions.CheckStatus(filePath)
+
+
+if __name__ == "__main__":
+    interface = screen()
+    interface.run()

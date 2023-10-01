@@ -1,11 +1,9 @@
 import PySimpleGUI as sg
-from time import sleep
 import os
 import sys
 script_dir = os.path.dirname( __file__ )
 func_dir = os.path.join(script_dir, "Main")
 sys.path.append(func_dir)
-from Main import Main
 
 class screen:
     def __init__(self):
@@ -34,13 +32,7 @@ class screen:
             if self.events == sg.WIN_CLOSED:
                 break
             else:
-                bot = Main.Run()
+                from Main import Main
+                Main.Run()
                 break
         self.window.Close()
-
-    def popup(self):
-        sg.Popup("Click me whe you are logged in :)", keep_on_top=True)
-
-teste = screen()
-
-teste.run()
