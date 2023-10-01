@@ -37,11 +37,14 @@ class InvoiceExtraction:
         
 
     def Start(self, webUrl):
-        self.sel.startBrowser()
-        self.sel.OpenUrl(webUrl)
-        tablevalues = self.GetTableValues()
-        self.sel.QuitDriver()
-        return tablevalues
+        try:
+            self.sel.startBrowser()
+            self.sel.OpenUrl(webUrl)
+            tablevalues = self.GetTableValues()
+            self.sel.QuitDriver()
+            return tablevalues
+        except Exception as e:
+            return f"Error: {e}"
 
 
     
@@ -95,7 +98,7 @@ class InputForm:
     def Start(self, webUrl, values):
         self.sel.startBrowser()
         self.sel.OpenUrl(webUrl)
-        self.FillForm(values)
+        return self.FillForm(values)
     
 
     def GetElement(self, element, formatValue = ""):
@@ -105,39 +108,49 @@ class InputForm:
         return self.elementsDic[element]
 
     def FillForm(self, values):
-        startButton = self.sel.FindElement(self.GetElement("startButton"))
-        startButton.click()
 
+        try:
+            startButton = self.sel.FindElement(self.GetElement("startButton"))
+            startButton.click()
 
+            itemStatus = {}
 
-        for chave, valor in values.items():
+            for chave, valor in values.items():
 
-            try:
-                finishedText = self.sel.FindElement(self.GetElement("textCongratulations"))
-                break
-            except:
-                pass
+                try:
+                    finishedText = self.sel.FindElement(self.GetElement("textCongratulations"))
+                    break
+                except:
+                    pass
 
-            firstName = self.sel.FindElement(self.GetElement("inputFirstName"))
-            firstName.send_keys(valor[2])
-            
-            lastName = self.sel.FindElement(self.GetElement("inputLastName"))
-            lastName.send_keys(valor[3])
+                firstName = self.sel.FindElement(self.GetElement("inputFirstName"))
+                firstName.send_keys(valor[2])
+                
+                lastName = self.sel.FindElement(self.GetElement("inputLastName"))
+                lastName.send_keys(valor[3])
 
-            company = self.sel.FindElement(self.GetElement("inputCompanyName"))
-            company.send_keys(valor[4])
+                company = self.sel.FindElement(self.GetElement("inputCompanyName"))
+                company.send_keys(valor[4])
 
-            roleCompany = self.sel.FindElement(self.GetElement("inputRoleCompany"))
-            roleCompany.send_keys(valor[5])
-            
-            email = self.sel.FindElement(self.GetElement("inputEmail"))
-            email.send_keys(valor[6])
+                roleCompany = self.sel.FindElement(self.GetElement("inputRoleCompany"))
+                roleCompany.send_keys(valor[5])
+                
+                email = self.sel.FindElement(self.GetElement("inputEmail"))
+                email.send_keys(valor[6])
 
-            address = self.sel.FindElement(self.GetElement("inputAddress"))
-            address.send_keys(valor[7])
+                address = self.sel.FindElement(self.GetElement("inputAddress"))
+                address.send_keys(valor[7])
 
-            phoneNumber = self.sel.FindElement(self.GetElement("inputPhoneNumber"))
-            phoneNumber.send_keys(valor[8])
+                phoneNumber = self.sel.FindElement(self.GetElement("inputPhoneNumber"))
+                phoneNumber.send_keys(valor[8])
 
-            buttonSubmit = self.sel.FindElement(self.GetElement("buttonSubmit"))
-            buttonSubmit.click()
+                buttonSubmit = self.sel.FindElement(self.GetElement("buttonSubmit"))
+                buttonSubmit.click()
+
+                itemStatus[chave] = "Sucesso"
+
+        except Exception as e:
+            itemStatus[chave] = f"Erro: {e}"
+        
+        finally:
+            return itemStatus

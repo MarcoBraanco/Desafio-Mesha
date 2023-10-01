@@ -47,27 +47,38 @@ class ExcelFunctions:
 
         return data
     
-    def UpdateExcel(self, id, filePath, status):
+    def UpdateStatusExcel(self, id, filePath, status):
         try:
-            # Carregar a planilha
+
             workbook = openpyxl.load_workbook(filePath)
             sheet = workbook.active
 
-            # Encontrar a coluna do ID (assumindo que está na coluna A)
-            coluna_id = 1
             for row in sheet.iter_rows(min_row=2, max_col=1, values_only=True):
                 if row[0] == id:
-                    coluna_status = 11
-                    sheet.cell(row=int(row[0]), column=coluna_status, value=status)
+                    coluna_status = 11 #Coluna status
+                    sheet.cell(row=int(row[0]) + 1, column=coluna_status, value=status)
                     break
 
-            # Salvar as alterações
             workbook.save(filePath)
 
         except Exception as e:
             print(f"Erro ao atualizar o status do item: {e}")
 
 
-teste = ExcelFunctions()
+    def CheckStatus(self, filePath):
 
-teste.UpdateExcel("3", r"C:\Users\marco\Desktop\Desafio - Mesha\Desafio-Mesha\Data\Invoice extraction data - 30.09.2023 - 16h 55m 56s.xlsx", "TESTE")
+        workbook = openpyxl.load_workbook(filePath)
+        sheet = workbook.active
+
+        for row in sheet.iter_rows(min_row=2, max_col=11, values_only=True):
+            if row[10] == None:
+                sheet.cell(row=int(row[0]) + 1, column = 11, value="Erro: Tratar manualmente")
+        
+        workbook.save(filePath)
+
+
+    def WriteLog(self, mensagem, filePath):
+
+        with open(filePath, "a") as arquivo:
+            nowTimeStamp = datetime.now().strftime("%d/%m/%Y - %Hh %Mm %Ss")
+            arquivo.write(f"{nowTimeStamp} - {mensagem}\n")
